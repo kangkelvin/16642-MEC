@@ -84,11 +84,19 @@ xlabel('Time t (secs)');
 ylabel('Solution y');
 legend('y', 'y_d');
 
+figure(10);
+plot(t, x(1,:), '-o', t, x(2,:), '-o', t, x(3,:), '-o', t, x(4,:), '-o')
+title("Plot of state x vs time");
+xlabel('Time t (secs)');
+ylabel('Solution x');
+legend('x1 = $x_c$','x2 = $\phi$','x3 = $\dot{x_c}$', ...
+        'x4 = $\dot{\phi}$', 'Interpreter', 'latex');
+
 %%% Q2(h) %%%
 Q_opt = [1 0 0 0;
-     0 50 0 0;
-     0 0 10 0;
-     0 0 0 100];
+         0 50 0 0;
+         0 0 10 0;
+         0 0 0 100];
  
 R_opt = 0.1;
 
@@ -116,7 +124,7 @@ for k = 1:numOfIteration-1
     t(k+1) = t(k) + T;
 end
 
-figure(10);
+figure(11);
 y = C * x;
 plot(t(1:end-1), y(1:end-1), '-o', t(1:end-1), y_d(1:end-1), '-o');
 title("Plot of y and desired y_d vs time");
