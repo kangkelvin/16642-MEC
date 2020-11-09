@@ -19,7 +19,7 @@ Q = [1 0 0 0;
      0 0 10 0;
      0 0 0 20];
  
-R = 2;
+R = 5;
 
 K_c = lqr(A,B,Q,R);
 A_fb = A - B*K_c;
@@ -40,15 +40,16 @@ disp(rank(Wo));
 
 % Numerial integration parameter setup
 T = 0.01;
-t_end = 210; % add additional 10 seconds to wait for error to stabilise
+t_end = 250; % add additional 50 seconds to wait for error to stabilise
 numOfIteration = ceil(t_end/T)+1;
 t = zeros(1, numOfIteration);
 x = zeros(n, numOfIteration);
 x_hat = zeros(n, numOfIteration);
+x_hat(:,1) = [0.0015, 0.005, 0.005, 0.005];
 y = zeros(p, numOfIteration);
 y_d = zeros(p, numOfIteration);
-y_d(1, 10/T:60/T) = 20;
-y_d(1, 110/T:160/T) = 20;
+y_d(1, 50/T:100/T) = 20;
+y_d(1, 150/T:200/T) = 20;
 v = (-C * ((A-B*K_c) \ B)) \ y_d;
 
 % LQR controller for the state observer
@@ -58,6 +59,8 @@ Q_e = [1 0 0 0;
        0 0 0 100];
 R_e = 100;
 K_o = (lqr(A', C', Q_e, R_e))';
+% e_val = [-5; -7; -1.5-0.4i; -1.5+0.4i];
+% K_o = (place(A',C',e_val))';
 A_fb_e = A - K_o * C;
 
 disp("eig(A_fb_e):");
@@ -120,12 +123,14 @@ disp(max(abs(x(2,:) - x_hat(2,:))));
 disp(max(abs(x(3,:) - x_hat(3,:))));
 disp(max(abs(x(4,:) - x_hat(4,:))));
 
+y_hat = C * x_hat;
 figure(2);
-plot(t(1:end-1), y(1:end-1), '-o', t(1:end-1), y_d(1:end-1), '-o');
-title("Plot of y and desired y_d vs time");
+plot(t(1:end-1), y(1:end-1), '-o',  t(1:end-1), y_hat(1:end-1), ...
+    t(1:end-1), y_d(1:end-1), '-o');
+title("Plot of y, y hat, and desired y_d vs time");
 xlabel('Time t (secs)');
 ylabel('Solution y');
-legend('y', 'y_d');
+legend('y', 'y hat', 'y_d');
 axis([0 220 -10 30])
 
 figure(3);
