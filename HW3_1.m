@@ -23,8 +23,9 @@ for i = 1:time_steps
     
     %update
     S = H_obs * P_pred * H_obs' + W;
-    X_update = X_pred + P_pred * H_obs' / S * (Y(i) - H_obs*X_pred);
-    P_update = P_pred - H_obs * P_pred * H_obs' / S * H_obs * P_pred;
+    K = P_pred * H_obs' * inv(S);
+    X_update = X_pred + K * (Y(i) - H_obs*X_pred);
+    P_update = P_pred - K * H_obs * P_pred;
     
     X_hat = X_update;
     P = P_update;
