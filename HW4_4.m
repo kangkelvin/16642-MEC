@@ -10,7 +10,7 @@ H0to3 = H0to1 * H1to2 * H2to3;
 disp('H0to3:')
 disp(H0to3)
 
-J = [-0.5*sin(theta1+theta2+theta3)-sin(theta1+theta2)-theta1, -0.5*sin(theta1+theta2+theta3)-sin(theta1+theta2), -0.5*sin(theta1+theta2+theta3);
+J = [-0.5*sin(theta1+theta2+theta3)-sin(theta1+theta2)-sin(theta1), -0.5*sin(theta1+theta2+theta3)-sin(theta1+theta2), -0.5*sin(theta1+theta2+theta3);
      0.5*cos(theta1+theta2+theta3)+cos(theta1+theta2)+cos(theta1), 0.5*cos(theta1+theta2+theta3)+cos(theta1+theta2), 0.5*cos(theta1+theta2+theta3)];
 
 disp('J:')
